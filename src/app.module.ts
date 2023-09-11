@@ -4,8 +4,10 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { TypeOrmConfigService } from "./config/typeorm.config.service";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { UsersModule } from "./module/users/users.module";
-
+import { UsersModule } from './modules/users/users.module';
+import { NotificationsModule } from './modules/notifications/notifications.module';
+import { DevicesModule } from './modules/devices/devices.module';
+import { InquiriesModule } from './modules/inquiries/inquiries.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), // 일단 이것은 무조건 가장 위에서!
@@ -14,8 +16,10 @@ import { UsersModule } from "./module/users/users.module";
       useClass: TypeOrmConfigService,
       inject: [ConfigService], // 주목
     }),
-
     UsersModule,
+    NotificationsModule,
+    DevicesModule,
+    InquiriesModule
   ],
   controllers: [AppController],
   providers: [AppService],
