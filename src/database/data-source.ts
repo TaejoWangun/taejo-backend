@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { DataSource, DataSourceOptions } from "typeorm";
 
 // export const AppDataSource = new DataSource({
-//   type: String(process.env.DATABASE_TYPE),
+//   type: "postgres",
 //   host: process.env.DATABASE_HOST,
 //   port: process.env.DATABASE_PORT
 //     ? parseInt(process.env.DATABASE_PORT, 10)
@@ -22,7 +22,7 @@ export const dataSourceOptions = new DataSource({
   username: "postgres",
   password: "postgres",
   database: "postgres",
-  synchronize: false,
+  synchronize: true,
   entities: ["dist/modules/**/**/*.entity{.ts,.js}"],
   migrations: ["dist/database/migrations/**/*{.ts,.js}"],
 } as DataSourceOptions);
