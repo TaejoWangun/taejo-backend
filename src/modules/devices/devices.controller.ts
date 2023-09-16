@@ -1,34 +1,28 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { DevicesService } from './devices.service';
-import { CreateDeviceDto } from './dto/create-device.dto';
-import { UpdateDeviceDto } from './dto/update-device.dto';
+import { Controller, Get, Post, Body, Delete } from "@nestjs/common";
+import { DevicesService } from "./devices.service";
+import { CreateDeviceDto } from "./dto/create-device.dto";
+import { DeleteDeviceDto } from "./dto/delete-device.dto";
+import { v4 as uuidv4 } from "uuid";
 
-@Controller('devices')
+@Controller("devices")
 export class DevicesController {
   constructor(private readonly devicesService: DevicesService) {}
 
-  @Post()
-  create(@Body() createDeviceDto: CreateDeviceDto) {
-    return this.devicesService.create(createDeviceDto);
+  @Post("/alert")
+  async create(@Body() createDeviceDto: CreateDeviceDto) {
+    const uuid = uuidv4();
+    const userId = 1;
+    return await this.devicesService.create(createDeviceDto, uuid, userId);
   }
 
-  @Get()
-  findAll() {
-    return this.devicesService.findAll();
+  @Get("/alert")
+  async findAll() {
+    const userId = 1;
+    return await this.devicesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.devicesService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDeviceDto: UpdateDeviceDto) {
-    return this.devicesService.update(+id, updateDeviceDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.devicesService.remove(+id);
+  @Delete("/alert")
+  async remove(@Body() deleteDeviceDto: DeleteDeviceDto) {
+    return await this.devicesService.remove(deleteDeviceDto);
   }
 }

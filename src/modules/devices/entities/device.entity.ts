@@ -7,6 +7,7 @@ import {
   OneToMany,
   PrimaryColumn,
   PrimaryGeneratedColumn,
+  JoinColumn,
 } from "typeorm";
 import { UserEntity } from "../../users/entities/user.entity";
 import { NotificationEntity } from "../../notifications/entities/notification.entity";
@@ -38,6 +39,7 @@ export class DeviceEntity extends BaseEntity {
   activeStatus: Boolean;
 
   @ManyToOne(() => UserEntity, (userEntity) => userEntity.devices)
+  @JoinColumn([{ name: "userId", referencedColumnName: "id" }])
   user: UserEntity;
 
   @OneToMany(
