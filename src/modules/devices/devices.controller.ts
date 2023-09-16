@@ -8,20 +8,20 @@ import { v4 as uuidv4 } from "uuid";
 export class DevicesController {
   constructor(private readonly devicesService: DevicesService) {}
 
-  @Post("/alert")
+  @Post()
   async create(@Body() createDeviceDto: CreateDeviceDto) {
     const uuid = uuidv4();
     const userId = 1;
     return await this.devicesService.create(createDeviceDto, uuid, userId);
   }
 
-  @Get("/alert")
+  @Get()
   async findAll() {
     const userId = 1;
     return await this.devicesService.findAll();
   }
 
-  @Delete("/alert")
+  @Delete()
   async remove(@Body() deleteDeviceDto: DeleteDeviceDto) {
     return await this.devicesService.remove(deleteDeviceDto);
   }
