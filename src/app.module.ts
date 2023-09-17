@@ -7,6 +7,7 @@ import { NotificationsModule } from "./modules/notifications/notifications.modul
 import { DevicesModule } from "./modules/devices/devices.module";
 import { InquiriesModule } from "./modules/inquiries/inquiries.module";
 import { DataSource, DataSourceOptions } from "typeorm";
+import { AuthModule } from "./modules/auth/auth.module";
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -25,6 +26,7 @@ import { DataSource, DataSourceOptions } from "typeorm";
     NotificationsModule,
     DevicesModule,
     InquiriesModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

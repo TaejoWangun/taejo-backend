@@ -21,10 +21,11 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
+  //already have this in auth post registeration
+  // @Post()
+  // create(@Body() createUserDto: CreateUserDto) {
+  //   return this.usersService.create(createUserDto);
+  // }
 
   @Put(":id")
   update(@Param("id") id: number, @Body() updateUserDto: UpdateUserDto) {
