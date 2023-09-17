@@ -13,27 +13,60 @@ export class DevicesService {
     private readonly deviceRepository: Repository<DeviceEntity>
   ) {}
   async create(createDeviceDto: CreateDeviceDto, uuid: string, userId: number) {
-    await this.deviceRepository.insert({
-      uuid,
-      fcmToken: createDeviceDto.fcmToken,
-      name: createDeviceDto.name,
-      mode: createDeviceDto.mode,
-      startTime: createDeviceDto.startTime,
-      endTime: createDeviceDto.endTime,
-      alarmCount: createDeviceDto.alarmCount,
-      activeStatus: createDeviceDto.activeStatus,
-    });
-    return "알림 기기가 등록되었습니다.";
+    try {
+      const target = await this.deviceRepository.findOne({
+        where: { fcmToken: createDeviceDto.fcmToken },
+      });
+      if (target) {
+        return "이미 등록된 기기입니다.";
+      } else {
+        const result = await this.deviceRepository.insert({
+          uuid,
+          fcmToken: createDeviceDto.fcmToken,
+          name: createDeviceDto.name,
+          mode: createDeviceDto.mode,
+          startTime: createDeviceDto.startTime,
+          endTime: createDeviceDto.endTime,
+          alarmCount: createDeviceDto.alarmCount,
+          activeStatus: createDeviceDto.activeStatus,
+        });
+        if (result) {
+          return "기기가 등록되었습니다.";
+        } else {
+          return "기기 등록에 실패하였습니다.";
+        }
+      }
+    } catch (error) {
+      return "일시적인 오류가 발생하였습니다.";
+    }
   }
 
   async findAll() {
-    return await this.deviceRepository.find({});
+    try {
+      return await this.deviceRepository.find({});
+    } catch (error) {
+      return "일시적인 오류가 발생하였습니다.";
+    }
   }
 
   async remove(deleteDeviceDto: DeleteDeviceDto) {
-    await this.deviceRepository.delete({
-      uuid: deleteDeviceDto.uuid,
-    });
-    return `This action removes a device`;
+    try {
+      const target = await this.deviceRepository.findOne({
+        where: { uuid: deleteDeviceDto.uuid },
+      });
+      if (!target) {
+        return "존재하지 않는 기기입니다.";
+      }
+      const result = await this.deviceRepository.delete({
+        uuid: deleteDeviceDto.uuid,
+      });
+      if (result) {
+        return `기기가 삭제되었습니다.`;
+      } else {
+        return `기기 삭제에 실패하였습니다.`;
+      }
+    } catch (error) {
+      return "일시적인 오류가 발생하였습니다.";
+    }
   }
 }
