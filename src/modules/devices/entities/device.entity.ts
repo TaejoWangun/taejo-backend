@@ -39,7 +39,7 @@ export class DeviceEntity extends BaseEntity {
   activeStatus: Boolean;
 
   @ManyToOne(() => UserEntity, (userEntity) => userEntity.devices)
-  @JoinColumn([{ name: "userId", referencedColumnName: "id" }])
+  @JoinColumn([{ name: "userId", referencedColumnName: "userId" }])
   user: UserEntity;
 
   @OneToMany(

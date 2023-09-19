@@ -7,6 +7,7 @@ import {
   DeleteDateColumn,
   Entity,
   OneToMany,
+  PrimaryColumn,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
@@ -19,8 +20,8 @@ import * as bcrypt from "bcrypt";
 
 @Entity()
 export class UserEntity extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryColumn()
+  userId: string;
 
   @Column()
   email: string;
