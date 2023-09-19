@@ -16,9 +16,9 @@ import { CreateUserDto, UpdateUserDto } from "./dto/create-user.dto";
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get(":id")
-  findOne(@Param("id") id: number) {
-    return this.usersService.findOne(id);
+  @Get(":userId")
+  findOne(@Param("userId") userId: string) {
+    return this.usersService.findOne(userId);
   }
 
   //already have this in auth post registeration
