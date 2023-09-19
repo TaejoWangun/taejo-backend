@@ -23,6 +23,9 @@ export class AuthService {
   async login(user: UserEntity) {
     const payload = {
       username: user.email,
+      sub: {
+        userId: user.userId,
+      },
     };
 
     return {
@@ -35,6 +38,9 @@ export class AuthService {
   async refreshToken(user: UserEntity) {
     const payload = {
       username: user.email,
+      sub: {
+        userId: user.userId,
+      },
     };
 
     return {
