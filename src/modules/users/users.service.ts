@@ -16,7 +16,12 @@ export class UsersService {
   }
 
   async findOneWithUserName(userName: string) {
-    return await this.userRepo.findOne({ where: { email: userName } });
+    let user = await this.userRepo.findOne({ where: { email: userName } });
+
+    if (!user) {
+      user = await this.userRepo.findOne({ where: { userId: userName } });
+    }
+    return user;
   }
 
   async create(createUserDto: CreateUserDto) {
