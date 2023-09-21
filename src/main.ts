@@ -17,6 +17,7 @@ async function bootstrap() {
     })
   );
   // console.log({ secret: process.env.jwt_secret });
+  app.enableCors(); // Enable CORS for all origins
 
   await app.listen(3000);
 }
