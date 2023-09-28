@@ -1,11 +1,12 @@
 import {
   IsBoolean,
-  IsDate,
   IsDateString,
   IsNumber,
+  IsObject,
   IsString,
 } from "class-validator";
 import { ModeType } from "src/constants";
+import { UserEntity } from "src/modules/users/entities/user.entity";
 
 export class CreateDeviceDto {
   @IsString()
@@ -28,4 +29,7 @@ export class CreateDeviceDto {
 
   @IsBoolean()
   readonly activeStatus: boolean;
+
+  @IsObject()
+  readonly userEntity: UserEntity;
 }

@@ -6,7 +6,6 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryColumn,
-  PrimaryGeneratedColumn,
   JoinColumn,
 } from "typeorm";
 import { UserEntity } from "../../users/entities/user.entity";
@@ -38,8 +37,10 @@ export class DeviceEntity extends BaseEntity {
   @Column()
   activeStatus: Boolean;
 
-  @ManyToOne(() => UserEntity, (userEntity) => userEntity.devices)
-  @JoinColumn([{ name: "userId", referencedColumnName: "userId" }])
+  @ManyToOne(() => UserEntity, (userEntity) => userEntity.devices, {
+    eager: true,
+  })
+  @JoinColumn({ name: "userId" })
   user: UserEntity;
 
   @OneToMany(

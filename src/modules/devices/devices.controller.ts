@@ -13,7 +13,7 @@ export class DevicesController {
   async create(@Body() createDeviceDto: CreateDeviceDto) {
     const uuid = uuidv4();
     const userId = 1;
-    return await this.devicesService.create(createDeviceDto, uuid, userId);
+    return await this.devicesService.create(createDeviceDto, uuid);
   }
 
   @Get()
