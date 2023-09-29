@@ -1,4 +1,4 @@
-import { IsBoolean, ValidateNested, IsString } from "class-validator";
+import { IsBoolean, ValidateNested, IsString, IsArray } from "class-validator";
 import { Type } from "class-transformer";
 
 class UserToNotificationDto {
@@ -18,10 +18,12 @@ export class CreateNotificationDto {
   @IsBoolean()
   readonly readStatus: boolean;
 
+  @IsArray()
   @ValidateNested({ each: true })
   @Type(() => UserToNotificationDto)
   readonly user: UserToNotificationDto[];
 
+  @IsArray()
   @ValidateNested({ each: true })
   @Type(() => DeviceToNotificationDto)
   readonly device: DeviceToNotificationDto[];

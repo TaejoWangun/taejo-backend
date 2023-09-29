@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsDateString,
   IsNumber,
@@ -35,6 +36,7 @@ export class CreateDeviceDto {
   @IsBoolean()
   readonly activeStatus: boolean;
 
+  @IsArray()
   @ValidateNested({ each: true })
   @Type(() => UserToDeviceDto)
   readonly user: UserToDeviceDto[];
