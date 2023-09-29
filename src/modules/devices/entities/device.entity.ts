@@ -41,7 +41,7 @@ export class DeviceEntity extends BaseEntity {
     eager: true,
   })
   @JoinColumn({ name: "userId" })
-  user: UserEntity;
+  user: UserEntity[];
 
   @OneToMany(
     () => NotificationEntity,

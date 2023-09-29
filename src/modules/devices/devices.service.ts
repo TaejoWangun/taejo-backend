@@ -29,7 +29,7 @@ export class DevicesService {
           endTime: createDeviceDto.endTime,
           alarmCount: createDeviceDto.alarmCount,
           activeStatus: createDeviceDto.activeStatus,
-          user: createDeviceDto.userEntity,
+          user: createDeviceDto.user,
         });
         if (result) {
           return "기기가 등록되었습니다.";

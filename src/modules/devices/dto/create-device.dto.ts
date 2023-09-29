@@ -2,11 +2,16 @@ import {
   IsBoolean,
   IsDateString,
   IsNumber,
-  IsObject,
   IsString,
+  ValidateNested,
 } from "class-validator";
 import { ModeType } from "src/constants";
-import { UserEntity } from "src/modules/users/entities/user.entity";
+import { Type } from "class-transformer";
+
+class UserToDeviceDto {
+  @IsString()
+  readonly userId: string;
+}
 
 export class CreateDeviceDto {
   @IsString()
@@ -30,6 +35,7 @@ export class CreateDeviceDto {
   @IsBoolean()
   readonly activeStatus: boolean;
 
-  @IsObject()
-  readonly userEntity: UserEntity;
+  @ValidateNested({ each: true })
+  @Type(() => UserToDeviceDto)
+  readonly user: UserToDeviceDto[];
 }

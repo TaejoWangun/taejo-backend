@@ -36,11 +36,11 @@ export class NotificationEntity extends BaseEntity {
     eager: true,
   })
   @JoinColumn({ name: "userId" })
-  user: UserEntity;
+  user: UserEntity[];
 
   @ManyToOne(() => DeviceEntity, (deviceEntity) => deviceEntity.notifications, {
     eager: true,
   })
   @JoinColumn({ name: "uuid" })
-  device: DeviceEntity;
+  device: DeviceEntity[];
 }

@@ -1,19 +1,28 @@
-import {
-  IsBoolean,
-  IsDateString,
-  IsNumber,
-  IsString,
-  IsObject,
-} from "class-validator";
-import { DeviceEntity } from "src/modules/devices/entities/device.entity";
-import { UserEntity } from "src/modules/users/entities/user.entity";
+import { IsBoolean, ValidateNested, IsString } from "class-validator";
+import { Type } from "class-transformer";
+
+class UserToNotificationDto {
+  @IsString()
+  readonly userId: string;
+}
+
+class DeviceToNotificationDto {
+  @IsString()
+  readonly uuid: string;
+}
+
 export class CreateNotificationDto {
   @IsString()
   readonly wavURL: string;
+
   @IsBoolean()
   readonly readStatus: boolean;
-  @IsObject()
-  readonly user: UserEntity;
-  @IsObject()
-  readonly device: DeviceEntity;
+
+  @ValidateNested({ each: true })
+  @Type(() => UserToNotificationDto)
+  readonly user: UserToNotificationDto[];
+
+  @ValidateNested({ each: true })
+  @Type(() => DeviceToNotificationDto)
+  readonly device: DeviceToNotificationDto[];
 }
