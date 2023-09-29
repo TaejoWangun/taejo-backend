@@ -12,13 +12,12 @@ export class DevicesController {
   @Post()
   async create(@Body() createDeviceDto: CreateDeviceDto) {
     const uuid = uuidv4();
-    const userId = 1;
-    return await this.devicesService.create(createDeviceDto, uuid, userId);
+
+    return this.devicesService.create(createDeviceDto, uuid);
   }
 
   @Get()
   async findAll() {
-    const userId = 1;
     return await this.devicesService.findAll();
   }
 

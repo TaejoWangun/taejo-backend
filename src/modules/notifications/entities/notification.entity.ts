@@ -1,25 +1,46 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  JoinColumn,
+  CreateDateColumn,
+  DeleteDateColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { UserEntity } from "../../users/entities/user.entity";
 import { DeviceEntity } from "../../devices/entities/device.entity";
 
 @Entity()
 export class NotificationEntity extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    wavURL: string;
+  @Column()
+  wavURL: string;
 
-    @Column()
-    readStatus: Boolean;
+  @Column()
+  readStatus: Boolean;
 
-    @Column()
-    timestamp: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-    @ManyToOne(() => UserEntity, (UserEntity) => UserEntity.notifications)
-    user: UserEntity
-    
-    @ManyToOne(() => DeviceEntity, (deviceEntity) => deviceEntity.notifications)
-    device : DeviceEntity
+  @DeleteDateColumn()
+  deletedAt: Date;
+
+  @ManyToOne(() => UserEntity, (userEntity) => userEntity.notifications, {
+    eager: true,
+  })
+  @JoinColumn({ name: "userId" })
+  user: UserEntity[];
+
+  @ManyToOne(() => DeviceEntity, (deviceEntity) => deviceEntity.notifications, {
+    eager: true,
+  })
+  @JoinColumn({ name: "uuid" })
+  device: DeviceEntity[];
 }

@@ -12,7 +12,7 @@ export class DevicesService {
     @InjectRepository(DeviceEntity)
     private readonly deviceRepository: Repository<DeviceEntity>
   ) {}
-  async create(createDeviceDto: CreateDeviceDto, uuid: string, userId: number) {
+  async create(createDeviceDto: CreateDeviceDto, uuid: string) {
     try {
       const target = await this.deviceRepository.findOne({
         where: { fcmToken: createDeviceDto.fcmToken },
@@ -29,6 +29,7 @@ export class DevicesService {
           endTime: createDeviceDto.endTime,
           alarmCount: createDeviceDto.alarmCount,
           activeStatus: createDeviceDto.activeStatus,
+          user: createDeviceDto.user,
         });
         if (result) {
           return "기기가 등록되었습니다.";
@@ -43,7 +44,9 @@ export class DevicesService {
 
   async findAll() {
     try {
-      return await this.deviceRepository.find({});
+      return await this.deviceRepository
+        .createQueryBuilder("device")
+        .getRawMany();
     } catch (error) {
       return "일시적인 오류가 발생하였습니다.";
     }
