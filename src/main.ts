@@ -27,7 +27,7 @@ async function bootstrap() {
     })
   );
 
-  app.enableCors(); // Enable CORS for all origins
+  app.enableCors(); // Enable CORS for all origins test
 
   await app.listen(PORT);
   console.log(env);

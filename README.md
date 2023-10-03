@@ -25,6 +25,6 @@ apt-get install direnv
 
 이 링크에서 설정하는 법 자세히 설명해주니까 참고하시면 될것 같아요! [link](https://inpa.tistory.com/entry/VS-Code-%E2%8F%B1%EF%B8%8F-%ED%95%9C%EB%B0%A9-%EC%BD%94%EB%93%9C-%ED%8F%AC%EB%A7%B7%ED%84%B0-Prettier-%EB%8F%84%EA%B5%AC-%EC%84%A4%EC%A0%95)
 
-### Webstorm test
+### Webstorm
 
 Preferences -> Tools -> Actions on Save -> Run Prettier 체크 박스 체크하시면됩니다.
