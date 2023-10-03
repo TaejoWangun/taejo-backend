@@ -1,24 +1,36 @@
-import { ValidationPipe } from "@nestjs/common";
+import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
+import * as fs from "fs";
+import * as path from "path";
+import * as https from "https";
 
-// async function bootstrap() {
-//   const app = await NestFactory.create(AppModule);
-//   app.useGlobalPipes(new ValidationPipe({ transform: true }));
-//   await app.listen(3000);
-// }
-// bootstrap();
+const PORT = process.env.PORT || 3000;
+const env = process.env.NODE_ENV;
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  let app: INestApplication<any>;
+
+  if (env === "dev") {
+    const httpsOptions = {
+      key: fs.readFileSync(path.join(__dirname, "..", "key.pem"), "utf-8"),
+      cert: fs.readFileSync(path.join(__dirname, "..", "cert.pem"), "utf-8"),
+    };
+
+    app = await NestFactory.create(AppModule, { httpsOptions });
+  } else {
+    app = await NestFactory.create(AppModule);
+  }
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
     })
   );
-  // console.log({ secret: process.env.jwt_secret });
+
   app.enableCors(); // Enable CORS for all origins
 
-  await app.listen(3000);
+  await app.listen(PORT);
+  console.log(env);
+  console.log(PORT);
 }
 bootstrap();

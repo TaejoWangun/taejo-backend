@@ -3,4 +3,11 @@
 /dist
 .idea/
 
+
+# key and cert for local https
+key.pem
+cert.pem
+
+
+
 .DS_Store
