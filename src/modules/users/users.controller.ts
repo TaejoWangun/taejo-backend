@@ -12,9 +12,14 @@ import {
 import { UsersService } from "./users.service";
 import { CreateUserDto, UpdateUserDto } from "./dto/create-user.dto";
 
-@Controller("user")
+@Controller("users")
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Post("direct")
+  async registerUser(@Body() createUserDto: CreateUserDto) {
+    return await this.usersService.create(createUserDto);
+  }
 
   @Get(":userId")
   findOne(@Param("userId") userId: string) {

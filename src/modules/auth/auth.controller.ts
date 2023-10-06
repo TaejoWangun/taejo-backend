@@ -13,15 +13,15 @@ export class AuthController {
   ) {}
 
   @UseGuards(LocalAuthGuard)
-  @Post("login")
+  @Post("direct")
   async login(@Request() req) {
     return await this.authService.login(req.user);
   }
 
-  @Post("register")
-  async registerUser(@Body() createUserDto: CreateUserDto) {
-    return await this.userService.create(createUserDto);
-  }
+  // @Post("register")
+  // async registerUser(@Body() createUserDto: CreateUserDto) {
+  //   return await this.userService.create(createUserDto);
+  // }
 
   @UseGuards(RefreshJwtGuard)
   @Post("refresh")
