@@ -8,18 +8,7 @@ import * as https from "https";
 const PORT = process.env.PORT || 3000;
 const env = process.env.NODE_ENV;
 async function bootstrap() {
-  let app: INestApplication<any>;
-
-  if (env === "dev") {
-    const httpsOptions = {
-      key: fs.readFileSync(path.join(__dirname, "..", "key.pem"), "utf-8"),
-      cert: fs.readFileSync(path.join(__dirname, "..", "cert.pem"), "utf-8"),
-    };
-
-    app = await NestFactory.create(AppModule, { httpsOptions });
-  } else {
-    app = await NestFactory.create(AppModule);
-  }
+  const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

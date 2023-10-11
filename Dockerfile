@@ -24,10 +24,6 @@ COPY --from=build /usr/src/app/dist ./dist
 
 COPY package*.json ./
 
-COPY key.pem ./
-
-COPY cert.pem ./
-
 RUN npm install --only=production
 
 RUN rm package*.json
