@@ -8,6 +8,8 @@ import { DevicesModule } from "./modules/devices/devices.module";
 import { InquiriesModule } from "./modules/inquiries/inquiries.module";
 import { DataSource, DataSourceOptions } from "typeorm";
 import { AuthModule } from "./modules/auth/auth.module";
+import { MessageModule } from "./modules/messages/message.module";
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,6 +29,7 @@ import { AuthModule } from "./modules/auth/auth.module";
     DevicesModule,
     InquiriesModule,
     AuthModule,
+    MessageModule
   ],
 })
 export class AppModule {}
