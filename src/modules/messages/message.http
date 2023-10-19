@@ -1,0 +1,7 @@
+### Send Messages
+POST http://localhost:3000/messages
+Content-Type: application/json
+
+{
+  "fcmToken": "ftRwQK7Ta4oo5SB4cU5TEH:APA91bHkD0xUtmpUGbjCzWdiIsC24DipUQ3JPSWKvqupXzk6LApJMoHL-XG6sVGjWANjomBHiY_btLPHeIR3l06BBAG8r6O8D5C-oOdci26Wu5w1rXr9U05Y6eHEfII5nhu3K2d-9E99"
+}
