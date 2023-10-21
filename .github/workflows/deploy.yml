@@ -61,7 +61,7 @@ jobs:
         run: npm run build
 
       - name: 📦 빌드한 코드를 압축
-        run: zip -r taejobackend.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
+        run: zip -r taejobackend.zip ./dist ./scripts ./appspec.yml ./.env ./package.json ./tsconfig.json ./tsconfig.build.json
 
       - name: 🌎 AWS에 접속
         uses: aws-actions/configure-aws-credentials@v1
