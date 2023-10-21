@@ -1,0 +1,82 @@
+name: deploy
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        node-version: [18.17.0]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - name: ✅ 체크아웃 source code.
+        uses: actions/checkout@v3
+
+      - name: ⚙️ ${{ matrix.node-version }} 버전의 노드로 세팅합니다.
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: ⚙️ 환경변수를 설정합니다.
+        working-directory: ./
+        env:
+          HOST: ${{secrets.DATABASE_HOST}}
+          DATABASE_PORT: ${{secrets.DATABASE_PORT}}
+          DATABASE_USERNAME: ${{secrets.DATABASE_USERNAME}}
+          DATABASE_PASSWORD: ${{secrets.DATABASE_PASSWORD}}
+          DATABASE_NAME: ${{secrets.DATABASE_NAME}}
+          DATABASE_SYNCHRONIZE: ${{secrets.DATABASE_SYNCHRONIZE}}
+          JWT_SECRET: ${{secrets.JWT_SECRET}}
+          JWT_EXPIRES: ${{secrets.JWT_EXPIRES}}
+          NODE_ENV: ${{secrets.NODE_ENV}}
+          PORT: ${{secrets.PORT}}
+
+        run: |
+          pwd
+          touch .env
+          echo "DATABASE_HOST=$DATABASE_HOST" >> .env
+          echo "DATABASE_PORT=$DATABASE_PORT" >> .env
+          echo "DATABASE_USERNAME=$DATABASE_USERNAME" >> .env
+          echo "DATABASE_PASSWORD=$DATABASE_PASSWORD" >> .env
+          echo "DATABASE_NAME=$DATABASE_NAME" >> .env
+          echo "DATABASE_SYNCHRONIZE=$DATABASE_SYNCHRONIZE" >> .env
+          echo "JWT_SECRET=$JWT_SECRET" >> .env
+          echo "JWT_EXPIRES=$JWT_EXPIRES" >> .env
+          echo "NODE_ENV=$NODE_ENV" >> .env
+          echo "PORT=$PORT" >> .env
+
+          cat .env
+
+      - name: ✨ 패키지 설치
+        working-directory: ./
+        run: npm install
+
+      - name: ✨ 빌드 과정을 시작
+        working-directory: ./
+        run: npm run build
+
+      - name: 📦 빌드한 코드를 압축
+        run: zip -r taejobackend.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
+
+      - name: 🌎 AWS에 접속
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: 🦖 S3에 압축된 서버 코드를 업로드
+        run: aws s3 cp --region ap-northeast-2 ./taejobackend.zip s3://taejobackend
+
+      - name: 🚀 AWS codeDeploy로 배포를 시작
+        run: aws deploy create-deployment
+          --ignore-application-stop-failures
+          --application-name taejobackend
+          --deployment-config-name CodeDeployDefault.OneAtATime
+          --deployment-group-name dev
+          --s3-location bucket=taejobackend,bundleType=zip,key=taejobackend.zip
