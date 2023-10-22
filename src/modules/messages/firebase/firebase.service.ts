@@ -1,6 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import * as admin from "firebase-admin/app";
 import { FIREBASE_INITIALIZATION_OPTION } from "./firebase.const";
+import { getMessaging, Message } from "firebase-admin/messaging";
 
 @Injectable()
 export class FirebaseService {
@@ -18,5 +19,9 @@ export class FirebaseService {
       : (this._firebaseApp = admin.initializeApp({
           credential: admin.cert(this._options),
         }));
+  }
+
+  async sendBatchMessages(messages: Message[]) {
+    return getMessaging().sendEach(messages);
   }
 }
