@@ -49,6 +49,6 @@ export class MessageService {
       },
     }));
 
-    return await getMessaging().sendEach(messages);
+    return getMessaging().sendEach(messages);
   }
 }

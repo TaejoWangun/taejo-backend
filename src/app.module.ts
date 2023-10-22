@@ -9,6 +9,10 @@ import { InquiriesModule } from "./modules/inquiries/inquiries.module";
 import { DataSource, DataSourceOptions } from "typeorm";
 import { AuthModule } from "./modules/auth/auth.module";
 import { MessageModule } from "./modules/messages/message.module";
+import {
+  FirebaseAppOptionService,
+  FirebaseModule,
+} from "./modules/messages/firebase.module";
 
 @Module({
   imports: [
@@ -24,12 +28,13 @@ import { MessageModule } from "./modules/messages/message.module";
         return new DataSource(options).initialize();
       },
     }),
+    FirebaseModule.registerAsync({ useClass: FirebaseAppOptionService }),
     UsersModule,
     NotificationsModule,
     DevicesModule,
     InquiriesModule,
     AuthModule,
-    MessageModule
+    MessageModule,
   ],
 })
 export class AppModule {}
