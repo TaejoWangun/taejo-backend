@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsString } from "class-validator";
 
 export class SendMessageDto {
-  @ApiProperty()
+  @ApiProperty({ description: "user id" })
   @IsString()
-  fcmToken: string;
+  userId: string;
 }

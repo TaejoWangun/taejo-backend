@@ -6,7 +6,7 @@ import { MessageService } from "./message.service";
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}
   @Post()
-  sendMessages(@Body() dto: SendMessageDto) {
-    return this.messageService.sendMessages(dto.fcmToken);
+  sendMessages(@Body() { userId }: SendMessageDto) {
+    return this.messageService.sendMessages(userId);
   }
 }
