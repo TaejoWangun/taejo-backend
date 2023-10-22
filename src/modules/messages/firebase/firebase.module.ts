@@ -1,33 +1,10 @@
-import {
-  DynamicModule,
-  Global,
-  Inject,
-  Injectable,
-  Module,
-  ModuleMetadata,
-  Provider,
-  Type,
-} from "@nestjs/common";
-import * as admin from "firebase-admin/app";
+import { DynamicModule, Global, Module, Provider } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { FirebaseAppAsyncOptions, FirebaseAppOptions } from "./firebase.option";
+import { FirebaseService } from "./firebase.service";
+import { FIREBASE_INITIALIZATION_OPTION } from "./firebase.const";
 
-export interface FirebaseAppOptions {
-  projectId: string;
-  privateKey: string;
-  clientEmail: string;
-}
-
-export interface FirebaseAppAsyncOptions
-  extends Pick<ModuleMetadata, "imports"> {
-  inject?: any[];
-  useExisting?: Type<FirebaseAppOptionsFactory>;
-  useClass?: Type<FirebaseAppOptionsFactory>;
-  useFactory?: (
-    ...args: any[]
-  ) => Promise<FirebaseAppOptions> | FirebaseAppOptions;
-}
-
-interface FirebaseAppOptionsFactory {
+export interface FirebaseAppOptionsFactory {
   createFirebaseAppOptions(): Promise<FirebaseAppOptions> | FirebaseAppOptions;
 }
 
@@ -60,7 +37,7 @@ export class FirebaseModule {
   ): Provider[] {
     return [
       {
-        provide: "FIREBASE_INITIALIZATION_OPTION",
+        provide: FIREBASE_INITIALIZATION_OPTION,
         useFactory: async (optionsFactory: FirebaseAppOptionsFactory) =>
           await optionsFactory.createFirebaseAppOptions(),
         inject: [options.useClass],
@@ -73,24 +50,5 @@ export class FirebaseModule {
         },
       },
     ];
-  }
-}
-
-@Injectable()
-export class FirebaseService {
-  private _firebaseApp;
-
-  constructor(@Inject("FIREBASE_INITIALIZATION_OPTION") private _options) {
-    this._firebaseApp = admin.initializeApp({
-      credential: admin.cert(this._options),
-    });
-  }
-
-  async connect(): Promise<any> {
-    return this._firebaseApp
-      ? this._firebaseApp
-      : (this._firebaseApp = admin.initializeApp({
-          credential: admin.cert(this._options),
-        }));
   }
 }

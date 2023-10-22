@@ -12,7 +12,7 @@ import { MessageModule } from "./modules/messages/message.module";
 import {
   FirebaseAppOptionService,
   FirebaseModule,
-} from "./modules/messages/firebase.module";
+} from "./modules/messages/firebase/firebase.module";
 
 @Module({
   imports: [
