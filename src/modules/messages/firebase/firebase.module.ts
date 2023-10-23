@@ -1,5 +1,11 @@
-import { DynamicModule, Global, Module, Provider } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
+import {
+  DynamicModule,
+  Global,
+  Injectable,
+  Module,
+  Provider,
+} from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { FirebaseAppAsyncOptions, FirebaseAppOptions } from "./firebase.option";
 import { FirebaseService } from "./firebase.service";
 import { FIREBASE_INITIALIZATION_OPTION } from "./firebase.const";
@@ -8,6 +14,7 @@ export interface FirebaseAppOptionsFactory {
   createFirebaseAppOptions(): Promise<FirebaseAppOptions> | FirebaseAppOptions;
 }
 
+@Injectable()
 export class FirebaseAppOptionService implements FirebaseAppOptionsFactory {
   constructor(private readonly configService: ConfigService) {}
 
@@ -21,14 +28,15 @@ export class FirebaseAppOptionService implements FirebaseAppOptionsFactory {
 }
 
 @Global()
-@Module({})
+@Module({
+  providers: [FirebaseService],
+  exports: [FirebaseService],
+})
 export class FirebaseModule {
   static registerAsync(options: FirebaseAppAsyncOptions): DynamicModule {
     return {
       module: FirebaseModule,
-      imports: [ConfigModule],
-      providers: [FirebaseService, ...this.createFirebaseOption(options)],
-      exports: [FirebaseService],
+      providers: [...this.createFirebaseOption(options)],
     };
   }
 
@@ -44,10 +52,7 @@ export class FirebaseModule {
       },
       {
         provide: options.useClass,
-        inject: [ConfigService],
-        useFactory: (configService: ConfigService) => {
-          return new options.useClass(configService);
-        },
+        useClass: options.useClass,
       },
     ];
   }
