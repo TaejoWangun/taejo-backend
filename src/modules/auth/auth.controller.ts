@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Response,
   Request,
   UseGuards,
 } from "@nestjs/common";
@@ -11,7 +12,7 @@ import { UsersService } from "../users/users.service";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { RefreshJwtGuard } from "./guards/refresh-jwt-auth.guard";
 import { CreateUserDto } from "../users/dto/create-user.dto";
-import { GoogleGuard } from "./guards/google-auth.guard";
+import { GoogleOauthGuard } from "./guards/oauth-auth.guard";
 
 @Controller("auth")
 export class AuthController {
@@ -31,10 +32,16 @@ export class AuthController {
   //   return await this.userService.create(createUserDto);
   // }
 
-  @Get("google")
-  @UseGuards(GoogleGuard)
-  async googleAuth(): Promise<void> {
-    // redirect google login page
+  @Get("to-google")
+  @UseGuards(GoogleOauthGuard)
+  async googleAuth(@Request() req) {}
+
+  @Get("google/callback")
+  @UseGuards(GoogleOauthGuard)
+  async googleAuthRedirect(@Request() req, @Response() res) {
+    const { user } = req;
+    return res.send(user);
+    // return await this.authService.login(req.user);
   }
 
   @UseGuards(RefreshJwtGuard)

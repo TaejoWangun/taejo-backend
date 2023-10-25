@@ -8,6 +8,9 @@ import { UsersService } from "../users/users.service";
 import { LocalStrategy } from "./strategies/local-strategy";
 import { JwtStrategy } from "./strategies/jwt-strategy";
 import { RefreshJwtStrategy } from "./strategies/refreshToken.strategy";
+import { GoogleStrategy } from "./strategies/google-strategy";
+import { PassportModule } from "@nestjs/passport";
+import { UsersModule } from "../users/users.module";
 
 @Module({
   controllers: [AuthController],
@@ -17,6 +20,7 @@ import { RefreshJwtStrategy } from "./strategies/refreshToken.strategy";
     LocalStrategy,
     JwtStrategy,
     RefreshJwtStrategy,
+    GoogleStrategy,
   ],
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
@@ -25,6 +29,8 @@ import { RefreshJwtStrategy } from "./strategies/refreshToken.strategy";
       //secret: "abcd",
       signOptions: { expiresIn: "3600s" },
     }),
+    PassportModule.register({ session: false }),
+    UsersModule,
   ],
 })
 export class AuthModule {}
