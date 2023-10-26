@@ -14,7 +14,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRES: ${JWT_EXPIRES}
     ports:
-      - "4000:4000"
+      - "3000:3000"
     depends_on:
       - database
     networks:
