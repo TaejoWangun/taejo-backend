@@ -28,15 +28,15 @@ import {
         return new DataSource(options).initialize();
       },
     }),
-    FirebaseModule.registerAsync({
-      useClass: FirebaseAppOptionService,
-    }),
+    // FirebaseModule.registerAsync({
+    //   useClass: FirebaseAppOptionService,
+    // }),
     UsersModule,
     NotificationsModule,
     DevicesModule,
     InquiriesModule,
     AuthModule,
-    MessageModule,
+    //MessageModule,
   ],
 })
 export class AppModule {}
