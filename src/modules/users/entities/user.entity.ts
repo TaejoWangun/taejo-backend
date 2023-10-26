@@ -23,7 +23,7 @@ export class UserEntity extends BaseEntity {
   @PrimaryColumn()
   userId: string;
 
-  @Column()
+  @Column({ nullable: true })
   userName: string;
 
   @Column({ unique: true })
