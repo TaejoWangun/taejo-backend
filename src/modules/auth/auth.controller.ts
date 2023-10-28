@@ -44,13 +44,21 @@ export class AuthController {
     const jwt = this.authService.login(user);
     res.set("authorization", (await jwt).accessToken);
     res.json(user);
-    //return await this.authService.login(user);
   }
 
   // naver 로그인
   @Get("to-naver")
   @UseGuards(naverOauthGuard)
   async naverAuth(@Request() req) {}
+
+  @Get("naver/callback")
+  @UseGuards(naverOauthGuard)
+  async naverAuthRedirect(@Request() req, @Response() res) {
+    const { user } = req;
+    const jwt = this.authService.login(user);
+    res.set("authorization", (await jwt).accessToken);
+    res.json(user);
+  }
 
   @UseGuards(RefreshJwtGuard)
   @Post("refresh")
