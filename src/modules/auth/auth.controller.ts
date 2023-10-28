@@ -1,18 +1,19 @@
 import {
-  Body,
   Controller,
   Get,
   Post,
-  Response,
   Request,
+  Response,
   UseGuards,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { UsersService } from "../users/users.service";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { RefreshJwtGuard } from "./guards/refresh-jwt-auth.guard";
-import { CreateUserDto } from "../users/dto/create-user.dto";
 import { GoogleOauthGuard, naverOauthGuard } from "./guards/oauth-auth.guard";
+import { User } from "../common/decorators/user.decorator";
+import { UserEntity } from "../users/entities/user.entity";
+import { Response as Res } from "express";
 
 @Controller("auth")
 export class AuthController {
@@ -53,10 +54,9 @@ export class AuthController {
 
   @Get("naver/callback")
   @UseGuards(naverOauthGuard)
-  async naverAuthRedirect(@Request() req, @Response() res) {
-    const { user } = req;
-    const jwt = this.authService.login(user);
-    res.set("authorization", (await jwt).accessToken);
+  async naverAuthRedirect(@User() user: UserEntity, @Response() res: Res) {
+    const jwt = await this.authService.login(user);
+    res.set("authorization", jwt.accessToken);
     res.json(user);
   }
 
