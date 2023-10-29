@@ -20,6 +20,7 @@ async function bootstrap() {
     .setTitle("Taejo backend Api Specification")
     .setDescription("The taejo API description")
     .setVersion("1.0")
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup("documents", app, document);

@@ -14,7 +14,9 @@ import { GoogleOauthGuard, naverOauthGuard } from "./guards/oauth-auth.guard";
 import { User } from "../common/decorators/user.decorator";
 import { UserEntity } from "../users/entities/user.entity";
 import { Response as Res } from "express";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags("auth")
 @Controller("auth")
 export class AuthController {
   constructor(
