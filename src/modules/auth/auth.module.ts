@@ -11,6 +11,7 @@ import { RefreshJwtStrategy } from "./strategies/refreshToken.strategy";
 import { GoogleStrategy } from "./strategies/google-strategy";
 import { PassportModule } from "@nestjs/passport";
 import { UsersModule } from "../users/users.module";
+import { naverStrategy } from "./strategies/naver-strategy";
 
 @Module({
   controllers: [AuthController],
@@ -21,6 +22,7 @@ import { UsersModule } from "../users/users.module";
     JwtStrategy,
     RefreshJwtStrategy,
     GoogleStrategy,
+    naverStrategy,
   ],
   imports: [
     TypeOrmModule.forFeature([UserEntity]),

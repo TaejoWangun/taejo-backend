@@ -40,21 +40,12 @@ export class UsersService {
 
   async findOneWithEmail(email: string) {
     const result = await this.userRepo.findOne({ where: { email: email } });
-    // console.log("findOneWithEmail_result.username: " + result.userName);
-    // console.log("findOneWithEmail_result.email: " + result.email);
-    // console.log("findOneWithEmail_result.userId: " + result.userId);
     return result;
   }
 
   async findByEmailOrSave(email, userName, userId) {
-    // console.log("findByEmailOrSave_username: " + username);
-    const foundUser = await this.findOneWithUserName(userName);
+    const foundUser = await this.findOneWithEmail(email);
     if (foundUser) {
-      // console.log("findByEmailOrSave_foundUser.email: " + foundUser.email);
-      // console.log(
-      //   "findByEmailOrSave_foundUser.username: " + foundUser.userName
-      // );
-      // console.log("findByEmailOrSave_foundUser.userId: " + foundUser.userId);
       return foundUser;
     }
     const newUser = await this.userRepo.save({
@@ -62,7 +53,6 @@ export class UsersService {
       userName,
       userId,
     });
-    // console.log("findByEmailOrSave_newUser: " + newUser);
     return newUser;
   }
 }
