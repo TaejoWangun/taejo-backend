@@ -42,7 +42,7 @@ export class AuthController {
 
   @UseGuards(GoogleOauthGuard)
   @Get("google/callback")
-  async googleAuthRedirect(@User() user: UserEntity, @Response() res) {
+  async googleAuthRedirect(@User() user: UserEntity, @Response() res: Res) {
     const jwt = await this.authService.login(user);
     res.set("authorization", jwt.accessToken);
     res.json(user);
