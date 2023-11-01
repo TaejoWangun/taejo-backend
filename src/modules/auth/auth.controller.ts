@@ -36,26 +36,25 @@ export class AuthController {
   // }
 
   // google 로그인
-  @Get("to-google")
   @UseGuards(GoogleOauthGuard)
+  @Get("to-google")
   async googleAuth(@Request() req) {}
 
-  @Get("google/callback")
   @UseGuards(GoogleOauthGuard)
-  async googleAuthRedirect(@Request() req, @Response() res) {
-    const { user } = req;
-    const jwt = this.authService.login(user);
-    res.set("authorization", (await jwt).accessToken);
+  @Get("google/callback")
+  async googleAuthRedirect(@User() user: UserEntity, @Response() res: Res) {
+    const jwt = await this.authService.login(user);
+    res.set("authorization", jwt.accessToken);
     res.json(user);
   }
 
   // naver 로그인
-  @Get("to-naver")
   @UseGuards(naverOauthGuard)
+  @Get("to-naver")
   async naverAuth(@Request() req) {}
 
-  @Get("naver/callback")
   @UseGuards(naverOauthGuard)
+  @Get("naver/callback")
   async naverAuthRedirect(@User() user: UserEntity, @Response() res: Res) {
     const jwt = await this.authService.login(user);
     res.set("authorization", jwt.accessToken);
