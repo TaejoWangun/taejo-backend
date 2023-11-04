@@ -1,22 +1,19 @@
-import {
-  IsArray,
-  IsBoolean,
-  IsDateString,
-  IsNumber,
-  IsString,
-  ValidateNested,
-} from "class-validator";
+import { IsArray, IsBoolean, IsDateString, IsNumber, IsString, ValidateNested } from "class-validator";
 import { ModeType } from "src/constants";
 import { Type } from "class-transformer";
 import { DeviceType } from "src/constants/devices-type";
+import { ApiProperty } from "@nestjs/swagger";
+
 
 class UserToDeviceDto {
   @IsString()
+
   readonly userId: string;
 }
 
 export class CreateDeviceDto {
   @IsString()
+  @ApiProperty({ description: 'fcm token' })
   readonly fcmToken: string;
 
   @IsString()

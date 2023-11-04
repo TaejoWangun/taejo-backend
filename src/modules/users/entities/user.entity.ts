@@ -23,14 +23,20 @@ export class UserEntity extends BaseEntity {
   @PrimaryColumn()
   userId: string;
 
-  @Column()
+  @Column({ nullable: true })
+  userName: string;
+
+  @Column({ unique: true })
   email: string;
 
   @Column({ type: "enum", enum: RoleType, default: RoleType.USER })
   role: RoleType;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
+
+  //@Column({ nullable: true })
+  //providerId: string;
 
   @CreateDateColumn()
   createdAt: Date;

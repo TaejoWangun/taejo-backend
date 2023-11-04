@@ -8,6 +8,12 @@ import { DevicesModule } from "./modules/devices/devices.module";
 import { InquiriesModule } from "./modules/inquiries/inquiries.module";
 import { DataSource, DataSourceOptions } from "typeorm";
 import { AuthModule } from "./modules/auth/auth.module";
+import { MessageModule } from "./modules/messages/message.module";
+import {
+  FirebaseAppOptionService,
+  FirebaseModule,
+} from "./modules/messages/firebase/firebase.module";
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -22,11 +28,15 @@ import { AuthModule } from "./modules/auth/auth.module";
         return new DataSource(options).initialize();
       },
     }),
+    // FirebaseModule.registerAsync({
+    //   useClass: FirebaseAppOptionService,
+    // }),
     UsersModule,
     NotificationsModule,
     DevicesModule,
     InquiriesModule,
     AuthModule,
+    //MessageModule,
   ],
 })
 export class AppModule {}

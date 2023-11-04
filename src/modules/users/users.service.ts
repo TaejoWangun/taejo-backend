@@ -37,4 +37,22 @@ export class UsersService {
     }
     return await this.userRepo.update(id, updateUserDto);
   }
+
+  async findOneWithEmail(email: string) {
+    const result = await this.userRepo.findOne({ where: { email: email } });
+    return result;
+  }
+
+  async findByEmailOrSave(email, userName, userId) {
+    const foundUser = await this.findOneWithEmail(email);
+    if (foundUser) {
+      return foundUser;
+    }
+    const newUser = await this.userRepo.save({
+      email,
+      userName,
+      userId,
+    });
+    return newUser;
+  }
 }
