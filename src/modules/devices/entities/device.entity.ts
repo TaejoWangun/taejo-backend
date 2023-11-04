@@ -10,6 +10,7 @@ import {
 } from "typeorm";
 import { UserEntity } from "../../users/entities/user.entity";
 import { NotificationEntity } from "../../notifications/entities/notification.entity";
+import { DeviceType } from "src/constants/devices-type";
 
 @Entity()
 export class DeviceEntity extends BaseEntity {
@@ -22,6 +23,9 @@ export class DeviceEntity extends BaseEntity {
   @Column()
   name: string;
 
+  @Column({ type: "enum", enum: DeviceType, default: DeviceType.OTHERS })
+  type: DeviceType;
+
   @Column({ type: "enum", enum: ModeType, default: ModeType.ALARM })
   mode: ModeType;
 
@@ -30,9 +34,6 @@ export class DeviceEntity extends BaseEntity {
 
   @Column({ type: "timestamp" })
   endTime: Date;
-
-  @Column()
-  alarmCount: number;
 
   @Column()
   activeStatus: Boolean;

@@ -10,24 +10,24 @@ export class DevicesController {
   constructor(private readonly devicesService: DevicesService) {}
 
   @Post()
-  async create(@Body() createDeviceDto: CreateDeviceDto) {
+  create(@Body() createDeviceDto: CreateDeviceDto) {
     const uuid = uuidv4();
 
     return this.devicesService.create(createDeviceDto, uuid);
   }
 
   @Get()
-  async findAll() {
-    return await this.devicesService.findAll();
+  findAll() {
+    return this.devicesService.findAll();
   }
 
   @Delete()
-  async remove(@Body() deleteDeviceDto: DeleteDeviceDto) {
-    return await this.devicesService.remove(deleteDeviceDto);
+  remove(@Body() deleteDeviceDto: DeleteDeviceDto) {
+    return this.devicesService.remove(deleteDeviceDto);
   }
 
   @Patch()
-  async update(@Body() updateDeviceDto: UpdateDeviceDto) {
-    return await this.devicesService.update(updateDeviceDto);
+  update(@Body() updateDeviceDto: UpdateDeviceDto) {
+    return this.devicesService.update(updateDeviceDto);
   }
 }

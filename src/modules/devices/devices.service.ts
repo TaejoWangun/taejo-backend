@@ -5,6 +5,14 @@ import { DeleteDeviceDto } from "./dto/delete-device.dto";
 import { Repository } from "typeorm";
 import { DeviceEntity } from "./entities/device.entity";
 import { UpdateDeviceDto } from "./dto/update-device.dto";
+import {
+  DeviceDeleteErrorException,
+  DeviceNotExistException,
+  DeviceReconnectErrorException,
+  DevicesErrorException,
+  DevicesExistException,
+  InternalServerErrorException,
+} from "src/exceptionHandler";
 
 @Injectable()
 export class DevicesService {
@@ -18,27 +26,30 @@ export class DevicesService {
         where: { fcmToken: createDeviceDto.fcmToken },
       });
       if (target) {
-        return "이미 등록된 기기입니다.";
+        throw "DevicesExistException";
       } else {
         const result = await this.deviceRepository.insert({
           uuid,
           fcmToken: createDeviceDto.fcmToken,
           name: createDeviceDto.name,
           mode: createDeviceDto.mode,
+          type: createDeviceDto.type,
           startTime: createDeviceDto.startTime,
           endTime: createDeviceDto.endTime,
-          alarmCount: createDeviceDto.alarmCount,
           activeStatus: createDeviceDto.activeStatus,
           user: createDeviceDto.user,
         });
         if (result) {
           return "기기가 등록되었습니다.";
         } else {
-          return "기기 등록에 실패하였습니다.";
+          throw "DevicesErrorException";
         }
       }
     } catch (error) {
-      return "일시적인 오류가 발생하였습니다.";
+      if (error == "DevicesExistException") throw new DevicesExistException();
+      else if (error == "DevicesErrorException")
+        throw new DevicesErrorException();
+      else throw new InternalServerErrorException();
     }
   }
 
@@ -48,7 +59,7 @@ export class DevicesService {
         .createQueryBuilder("device")
         .getRawMany();
     } catch (error) {
-      return "일시적인 오류가 발생하였습니다.";
+      return new InternalServerErrorException();
     }
   }
 
@@ -58,7 +69,7 @@ export class DevicesService {
         where: { uuid: deleteDeviceDto.uuid },
       });
       if (!target) {
-        return "존재하지 않는 기기입니다.";
+        throw "DeviceNotExistException";
       }
       const result = await this.deviceRepository.delete({
         uuid: deleteDeviceDto.uuid,
@@ -66,10 +77,14 @@ export class DevicesService {
       if (result) {
         return `기기가 삭제되었습니다.`;
       } else {
-        return `기기 삭제에 실패하였습니다.`;
+        throw "DeviceDeleteErrorException";
       }
     } catch (error) {
-      return "일시적인 오류가 발생하였습니다.";
+      if (error == "DeviceNotExistException") {
+        throw new DeviceNotExistException();
+      } else if ((error = "DeviceDeleteErrorException")) {
+        throw new DeviceDeleteErrorException();
+      } else throw new InternalServerErrorException();
     }
   }
   async update(updateDeviceDto: UpdateDeviceDto) {
@@ -79,9 +94,11 @@ export class DevicesService {
         { fcmToken: updateDeviceDto.fcmToken }
       );
       if (result) return `기기가 재연결 되었습니다.`;
-      else `기기 재연결에 실패하였습니다.`;
+      throw "DeviceReconnectErrorException";
     } catch (error) {
-      return "일시적인 오류가 발생하였습니다.";
+      if (error == "DeviceReconnectErrorException") {
+        throw new DeviceReconnectErrorException();
+      } else throw new InternalServerErrorException();
     }
   }
 }
