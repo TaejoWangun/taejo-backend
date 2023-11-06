@@ -1,7 +1,9 @@
 import { IsArray, IsBoolean, IsDateString, IsNumber, IsString, ValidateNested } from "class-validator";
 import { ModeType } from "src/constants";
 import { Type } from "class-transformer";
+import { DeviceType } from "src/constants/devices-type";
 import { ApiProperty } from "@nestjs/swagger";
+
 
 class UserToDeviceDto {
   @IsString()
@@ -20,14 +22,14 @@ export class CreateDeviceDto {
   @IsString()
   readonly mode: ModeType;
 
+  @IsString()
+  readonly type: DeviceType;
+
   @IsDateString()
   readonly startTime: Date;
 
   @IsDateString()
   readonly endTime: Date;
-
-  @IsNumber()
-  readonly alarmCount: number;
 
   @IsBoolean()
   readonly activeStatus: boolean;
