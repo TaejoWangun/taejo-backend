@@ -43,7 +43,7 @@ export class DeviceNotExistException extends HttpException {
   constructor() {
     super(
       `{code : 112, message: 존재하지 않는 기기입니다.}`,
-      HttpStatus.BAD_REQUEST
+      HttpStatus.NOT_FOUND
     );
   }
 }
