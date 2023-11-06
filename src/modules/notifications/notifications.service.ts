@@ -3,6 +3,12 @@ import { CreateNotificationDto } from "./dto/create-notification.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { NotificationEntity } from "./entities/notification.entity";
 import { Repository } from "typeorm";
+import {
+  InternalServerErrorException,
+  NotificationCreateErrorException,
+  NotificationNonExistErrorException,
+  NotificationDeleteErrorException,
+} from "src/exceptionHandler";
 
 @Injectable()
 export class NotificationsService {
@@ -21,10 +27,12 @@ export class NotificationsService {
       if (result) {
         return "알림이 등록되었습니다.";
       } else {
-        return "알림 등록에 실패하였습니다.";
+        throw "NotificationCreateErrorException";
       }
     } catch (error) {
-      return "일시적인 오류가 발생하였습니다.";
+      if (error == "NotificationCreateErrorException") {
+        throw new NotificationCreateErrorException();
+      } else throw new InternalServerErrorException();
     }
   }
 
@@ -34,7 +42,7 @@ export class NotificationsService {
         .createQueryBuilder("notification")
         .getRawMany();
     } catch (error) {
-      return "일시적인 오류가 발생하였습니다.";
+      throw new InternalServerErrorException();
     }
   }
 
@@ -45,7 +53,7 @@ export class NotificationsService {
         .where("notification.id = :id", { id })
         .getRawOne();
     } catch (error) {
-      return "일시적인 오류가 발생하였습니다.";
+      throw new InternalServerErrorException();
     }
   }
 
@@ -55,7 +63,7 @@ export class NotificationsService {
         where: { id },
       });
       if (!target) {
-        return "존재하지 않는 알림입니다.";
+        throw "NotificationNonExistErrorException";
       }
       const result = await this.notificationRepository.delete({
         id,
@@ -63,10 +71,14 @@ export class NotificationsService {
       if (result) {
         return `알림이 삭제되었습니다.`;
       } else {
-        return `알림 삭제에 실패하였습니다.`;
+        throw "NotificationDeleteErrorException";
       }
     } catch (error) {
-      return "일시적인 오류가 발생하였습니다.";
+      if (error == "NotificationNonExistErrorException") {
+        throw new NotificationNonExistErrorException();
+      } else if (error == "NotificationDeleteErrorException") {
+        throw new NotificationDeleteErrorException();
+      } else throw new InternalServerErrorException();
     }
   }
 }
