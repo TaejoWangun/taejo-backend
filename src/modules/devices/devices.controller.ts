@@ -4,7 +4,9 @@ import { CreateDeviceDto } from "./dto/create-device.dto";
 import { DeleteDeviceDto } from "./dto/delete-device.dto";
 import { UpdateDeviceDto } from "./dto/update-device.dto";
 import { v4 as uuidv4 } from "uuid";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags("devices")
 @Controller("devices")
 export class DevicesController {
   constructor(private readonly devicesService: DevicesService) {}

@@ -8,6 +8,10 @@ import { UsersService } from "../users/users.service";
 import { LocalStrategy } from "./strategies/local-strategy";
 import { JwtStrategy } from "./strategies/jwt-strategy";
 import { RefreshJwtStrategy } from "./strategies/refreshToken.strategy";
+import { GoogleStrategy } from "./strategies/google-strategy";
+import { PassportModule } from "@nestjs/passport";
+import { UsersModule } from "../users/users.module";
+import { naverStrategy } from "./strategies/naver-strategy";
 
 @Module({
   controllers: [AuthController],
@@ -17,14 +21,18 @@ import { RefreshJwtStrategy } from "./strategies/refreshToken.strategy";
     LocalStrategy,
     JwtStrategy,
     RefreshJwtStrategy,
+    GoogleStrategy,
+    naverStrategy,
   ],
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
     JwtModule.register({
-      // secret: process.env.JWT_SECRET,
-      secret: "abcd",
+      secret: process.env.JWT_SECRET,
+      //secret: "abcd",
       signOptions: { expiresIn: "3600s" },
     }),
+    PassportModule.register({ session: false }),
+    UsersModule,
   ],
 })
 export class AuthModule {}
