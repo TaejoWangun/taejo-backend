@@ -14,7 +14,10 @@ import { GoogleOauthGuard, naverOauthGuard } from "./guards/oauth-auth.guard";
 import { User } from "../common/decorators/user.decorator";
 import { UserEntity } from "../users/entities/user.entity";
 import { Response as Res } from "express";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
+import { DirectLoginDto } from "./dto/\bdirectLogin.dto";
+import { ApiCustomCreatedResponse } from "../common/api-response.dto";
+import { LoginResponseDto } from "./dto/login-response.dto";
 
 @ApiTags("auth")
 @Controller("auth")
@@ -24,7 +27,10 @@ export class AuthController {
     private userService: UsersService
   ) {}
 
+  @ApiOperation({ description: "직접 로그인" })
+  @ApiCustomCreatedResponse(LoginResponseDto)
   @UseGuards(LocalAuthGuard)
+  @ApiBody({ type: DirectLoginDto })
   @Post("direct")
   async login(@Request() req) {
     return await this.authService.login(req.user);

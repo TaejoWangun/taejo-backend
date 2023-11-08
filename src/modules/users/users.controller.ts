@@ -11,13 +11,17 @@ import {
 } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto, UpdateUserDto } from "./dto/create-user.dto";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiCustomCreatedResponse } from "../common/api-response.dto";
+import { UserResponseDto } from "./dto/userResponseDto";
 
 @ApiTags("users")
 @Controller("users")
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @ApiOperation({ description: "직접 회원가입" })
+  @ApiCustomCreatedResponse(UserResponseDto)
   @Post("direct")
   async registerUser(@Body() createUserDto: CreateUserDto) {
     return await this.usersService.create(createUserDto);
@@ -27,12 +31,6 @@ export class UsersController {
   findOne(@Param("userId") userId: string) {
     return this.usersService.findOne(userId);
   }
-
-  //already have this in auth post registeration
-  // @Post()
-  // create(@Body() createUserDto: CreateUserDto) {
-  //   return this.usersService.create(createUserDto);
-  // }
 
   @Put(":id")
   update(@Param("id") id: number, @Body() updateUserDto: UpdateUserDto) {
