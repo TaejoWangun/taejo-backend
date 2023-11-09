@@ -36,11 +36,6 @@ export class AuthController {
     return await this.authService.login(req.user);
   }
 
-  // @Post("register")
-  // async registerUser(@Body() createUserDto: CreateUserDto) {
-  //   return await this.userService.create(createUserDto);
-  // }
-
   // google 로그인
   @UseGuards(GoogleOauthGuard)
   @Get("to-google")

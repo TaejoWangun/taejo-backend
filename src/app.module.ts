@@ -13,6 +13,8 @@ import {
   FirebaseAppOptionService,
   FirebaseModule,
 } from "./modules/messages/firebase/firebase.module";
+import { APP_GUARD } from "@nestjs/core";
+import { JwtGuard } from "./modules/auth/guards/jwt-auth.guard";
 
 @Module({
   imports: [
@@ -37,6 +39,12 @@ import {
     InquiriesModule,
     AuthModule,
     // MessageModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+    },
   ],
 })
 export class AppModule {}
