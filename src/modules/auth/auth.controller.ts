@@ -18,6 +18,7 @@ import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { DirectLoginDto } from "./dto/\bdirectLogin.dto";
 import { ApiCustomCreatedResponse } from "../common/api-response.dto";
 import { LoginResponseDto } from "./dto/login-response.dto";
+import { Public } from "../common/decorators/public.decorator";
 
 @ApiTags("auth")
 @Controller("auth")
@@ -27,6 +28,7 @@ export class AuthController {
     private userService: UsersService
   ) {}
 
+  @Public()
   @ApiOperation({ description: "직접 로그인" })
   @ApiCustomCreatedResponse(LoginResponseDto)
   @UseGuards(LocalAuthGuard)
@@ -36,16 +38,13 @@ export class AuthController {
     return await this.authService.login(req.user);
   }
 
-  // @Post("register")
-  // async registerUser(@Body() createUserDto: CreateUserDto) {
-  //   return await this.userService.create(createUserDto);
-  // }
-
   // google 로그인
+  @Public()
   @UseGuards(GoogleOauthGuard)
   @Get("to-google")
   async googleAuth(@Request() req) {}
 
+  @Public()
   @UseGuards(GoogleOauthGuard)
   @Get("google/callback")
   async googleAuthRedirect(@User() user: UserEntity, @Response() res: Res) {
@@ -55,10 +54,12 @@ export class AuthController {
   }
 
   // naver 로그인
+  @Public()
   @UseGuards(naverOauthGuard)
   @Get("to-naver")
   async naverAuth(@Request() req) {}
 
+  @Public()
   @UseGuards(naverOauthGuard)
   @Get("naver/callback")
   async naverAuthRedirect(@User() user: UserEntity, @Response() res: Res) {
@@ -67,6 +68,7 @@ export class AuthController {
     res.json(user);
   }
 
+  @Public()
   @UseGuards(RefreshJwtGuard)
   @Post("refresh")
   async refreshToken(@Request() req) {
