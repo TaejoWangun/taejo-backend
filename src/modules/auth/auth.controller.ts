@@ -15,7 +15,7 @@ import { User } from "../common/decorators/user.decorator";
 import { UserEntity } from "../users/entities/user.entity";
 import { Response as Res } from "express";
 import { ApiBody, ApiOperation, ApiTags } from "@nestjs/swagger";
-import { DirectLoginDto } from "./dto/\bdirectLogin.dto";
+import { DirectLoginDto } from "./dto/directLogin.dto";
 import { ApiCustomCreatedResponse } from "../common/api-response.dto";
 import { LoginResponseDto } from "./dto/login-response.dto";
 import { Public } from "../common/decorators/public.decorator";
