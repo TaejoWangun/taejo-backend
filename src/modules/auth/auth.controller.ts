@@ -23,10 +23,7 @@ import { Public } from "../common/decorators/public.decorator";
 @ApiTags("auth")
 @Controller("auth")
 export class AuthController {
-  constructor(
-    private authService: AuthService,
-    private userService: UsersService
-  ) {}
+  constructor(private authService: AuthService) {}
 
   @Public()
   @ApiOperation({ description: "직접 로그인" })
