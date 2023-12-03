@@ -1,19 +1,35 @@
-import { Injectable } from '@nestjs/common';
-import { CreateInquiryDto } from './dto/create-inquiry.dto';
-import { UpdateInquiryDto } from './dto/update-inquiry.dto';
+import { Injectable } from "@nestjs/common";
+import { CreateInquiryDto } from "./dto/create-inquiry.dto";
+import { UpdateInquiryDto } from "./dto/update-inquiry.dto";
+import { InjectRepository } from "@nestjs/typeorm";
+import { InquiryEntity } from "./entities/inquiry.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class InquiriesService {
-  create(createInquiryDto: CreateInquiryDto) {
-    return 'This action adds a new inquiry';
+  constructor(
+    @InjectRepository(InquiryEntity)
+    private readonly inquiryRepository: Repository<InquiryEntity>
+  ) {}
+  async create(createInquiryDto: CreateInquiryDto) {
+    const result = await this.inquiryRepository.insert({
+      name: createInquiryDto.name,
+      email: createInquiryDto.email,
+      inquiryType: createInquiryDto.inquiryType,
+      content: createInquiryDto.content,
+    });
+
+    if (result) {
+      return "저장되었습니다";
+    }
   }
 
   findAll() {
-    return `This action returns all inquiries`;
+    return this.inquiryRepository.find();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} inquiry`;
+    return this.inquiryRepository.findOne({ where: { id: id } });
   }
 
   update(id: number, updateInquiryDto: UpdateInquiryDto) {

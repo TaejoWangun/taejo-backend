@@ -11,12 +11,18 @@ import { InquiriesService } from "./inquiries.service";
 import { CreateInquiryDto } from "./dto/create-inquiry.dto";
 import { UpdateInquiryDto } from "./dto/update-inquiry.dto";
 import { ApiTags } from "@nestjs/swagger";
+import { Public } from "../common/decorators/public.decorator";
 
 @ApiTags("inquiries")
 @Controller("inquiries")
 export class InquiriesController {
   constructor(private readonly inquiriesService: InquiriesService) {}
 
+  /**
+   * save inquiry from non-login user
+   * @param createInquiryDto
+   */
+  @Public()
   @Post()
   create(@Body() createInquiryDto: CreateInquiryDto) {
     return this.inquiriesService.create(createInquiryDto);
@@ -28,8 +34,8 @@ export class InquiriesController {
   }
 
   @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.inquiriesService.findOne(+id);
+  findOne(@Param("id") id: number) {
+    return this.inquiriesService.findOne(id);
   }
 
   @Patch(":id")
